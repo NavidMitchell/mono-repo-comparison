@@ -1,0 +1,19 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": false,
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/AtlasMarket-e2e"
+    },
+    {
+      "path": "./apps/AtlasMarket"
+    },
+    {
+      "path": "./apps/AtlasMarketUi"
+    },
+    {
+      "path": "./libs/AtlasMarketDomain"
+    }
+  ]
+}
