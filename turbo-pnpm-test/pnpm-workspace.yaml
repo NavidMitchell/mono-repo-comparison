@@ -1,0 +1,4 @@
+packages:
+  - 'src/frontends/*' # Contains all frontend applications, each folder within will be deployed as a separate application
+  - 'src/microservices/*' # Contains all microservices, each folder within will be deployed as a separate microservice
+  - 'src/structures/*' # Contains your complete domain model.
