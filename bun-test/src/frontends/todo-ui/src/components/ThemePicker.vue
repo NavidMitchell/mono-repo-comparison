@@ -88,7 +88,7 @@ watch(isOpen, (newValue) => {
 </script>
 
 <template>
-  <div class="theme-picker-container fixed right-4 top-1/2 -translate-y-1/2 z-40">
+  <div class="theme-picker-container fixed right-4 top-4 z-40">
     <!-- Toggle Button -->
     <button
       @click.stop="isOpen = !isOpen"
@@ -99,11 +99,12 @@ watch(isOpen, (newValue) => {
       </svg>
     </button>
 
-    <!-- Theme Options -->
+        <!-- Theme Options -->
     <Transition name="slide-left">
       <div
         v-if="isOpen"
-        class="absolute right-16 top-0 bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl p-4 border border-white/20 min-w-[180px]"
+        class="absolute right-0 top-14 bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl p-4 border border-white/20 min-w-[180px]"
+        style="max-width: calc(100vw - 2rem)"
       >
         <div class="text-sm font-semibold text-slate-700 mb-3">Choose Theme</div>
         <div class="space-y-2">

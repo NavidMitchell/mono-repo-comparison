@@ -198,8 +198,8 @@ const handleDeleteCancel = () => {
         <!-- Expanded content - Table view -->
         <Transition name="expand">
           <div v-if="isExpanded" class="mt-4">
-            <div class="overflow-hidden rounded-lg border border-slate-200 bg-slate-50/50">
-              <table class="w-full text-sm">
+            <div class="overflow-x-auto rounded-lg border border-slate-200 bg-slate-50/50">
+              <table class="w-full text-sm min-w-full">
                 <tbody class="divide-y divide-slate-200">
                   <tr>
                     <td class="px-4 py-3 font-semibold text-slate-700 bg-slate-100/50 w-32">
