@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted, watch } from 'vue'
   import { Todo, TodoEntityService } from 'bun-test-structures'
-  import { Pageable } from '@kinotic/continuum-client'
+  import { Pageable, Sort, Order, Direction } from '@kinotic/continuum-client'
   import TodoForm from './TodoForm.vue'
   import TodoItem from './TodoItem.vue'
 
@@ -19,8 +19,10 @@
     loading.value = true
     error.value = null
     try {
-      const pageable = Pageable.create(0, 1000)
-      let page
+      // Sort by completed field ascending (false first, true last)
+      const sort = { orders: [new Order('completed', Direction.ASC)]}
+      const pageable = Pageable.create(0, 1000, sort)
+      let page 
       
       if (searchQuery.value.trim()) {
         // Use search with Lucene syntax

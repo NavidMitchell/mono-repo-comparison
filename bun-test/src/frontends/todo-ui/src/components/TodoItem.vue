@@ -110,14 +110,24 @@ const handleDeleteCancel = () => {
 
     <!-- View mode -->
     <div v-else class="flex items-start gap-4">
-      <div class="flex-shrink-0 pt-1">
+      <div class="flex-shrink-0 pt-1 relative group">
         <input
           type="checkbox"
           :checked="todo.completed"
           @change="handleToggle"
           :disabled="loading"
-          class="w-6 h-6 text-indigo-600 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer disabled:cursor-not-allowed transition-all"
+          class="w-6 h-6 text-indigo-600 border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 cursor-pointer disabled:cursor-not-allowed transition-all hover:border-indigo-600 hover:bg-indigo-100 hover:ring-2 hover:ring-indigo-300 hover:shadow-lg peer relative"
         />
+        <!-- Hover checkmark -->
+        <svg
+          v-if="!todo.completed"
+          class="absolute top-2 left-1 w-4 h-4 text-indigo-600 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" />
+        </svg>
       </div>
       <div class="flex-1 min-w-0">
         <h3
