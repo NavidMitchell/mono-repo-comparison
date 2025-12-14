@@ -92,9 +92,9 @@ watch(isOpen, (newValue) => {
     <!-- Toggle Button -->
     <button
       @click.stop="isOpen = !isOpen"
-      class="w-12 h-12 bg-white/90 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl border-2 border-white/20 hover:border-indigo-300 flex items-center justify-center transition-all duration-200 hover:scale-110"
+      class="w-12 h-12 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl border-2 border-white/20 dark:border-slate-700/20 hover:border-indigo-300 dark:hover:border-indigo-600 flex items-center justify-center transition-all duration-200 hover:scale-110"
     >
-      <svg class="w-6 h-6 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="w-6 h-6 text-slate-700 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
       </svg>
     </button>
@@ -103,26 +103,26 @@ watch(isOpen, (newValue) => {
     <Transition name="slide-left">
       <div
         v-if="isOpen"
-        class="absolute right-0 top-14 bg-white/90 backdrop-blur-sm rounded-xl shadow-2xl p-4 border border-white/20 min-w-[180px]"
+        class="absolute right-0 top-14 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-xl shadow-2xl p-4 border border-white/20 dark:border-slate-700/20 min-w-[180px]"
         style="max-width: calc(100vw - 2rem)"
       >
-        <div class="text-sm font-semibold text-slate-700 mb-3">Choose Theme</div>
+        <div class="text-sm font-semibold text-slate-700 dark:text-slate-200 mb-3">Choose Theme</div>
         <div class="space-y-2">
           <button
             v-for="themeOption in themes"
             :key="themeOption.name"
             @click.stop="selectTheme(themeOption.name)"
-            class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 transition-colors"
-            :class="{ 'bg-slate-100': theme === themeOption.name }"
+            class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors"
+            :class="{ 'bg-slate-100 dark:bg-slate-700': theme === themeOption.name }"
           >
             <div
               class="w-8 h-8 rounded-lg flex-shrink-0"
               :class="`bg-gradient-to-br ${themeOption.colors.gradient}`"
             ></div>
-            <span class="text-sm font-medium text-slate-700">{{ themeOption.label }}</span>
+            <span class="text-sm font-medium text-slate-700 dark:text-slate-200">{{ themeOption.label }}</span>
             <svg
               v-if="theme === themeOption.name"
-              class="w-4 h-4 text-slate-600 ml-auto"
+              class="w-4 h-4 text-slate-600 dark:text-slate-300 ml-auto"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

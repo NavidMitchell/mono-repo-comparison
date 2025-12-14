@@ -107,8 +107,8 @@ const handleDeleteCancel = () => {
 <template>
   <div 
     :class="[
-      'bg-white/80 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-white/20 cursor-pointer',
-      props.themeClasses?.borderHover || 'hover:border-indigo-200/50',
+      'bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 border border-white/20 dark:border-slate-700/20 cursor-pointer',
+      props.themeClasses?.borderHover || 'hover:border-indigo-200/50 dark:hover:border-indigo-700/50',
       { 'opacity-75': todo.completed },
       { 'p-4': !isExpanded && !isEditing, 'p-6': isExpanded || isEditing }
     ]"
@@ -119,14 +119,14 @@ const handleDeleteCancel = () => {
       <input
         v-model="editTitle"
         type="text"
-        :class="`w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white text-slate-800 font-medium`"
+        :class="`w-full px-4 py-3 border-2 border-indigo-200 dark:border-slate-700 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 font-medium`"
         placeholder="Todo title"
         :disabled="loading"
       />
       <textarea
         v-model="editDescription"
         rows="3"
-        :class="`w-full px-4 py-3 border-2 border-indigo-200 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white text-slate-700 resize-none`"
+        :class="`w-full px-4 py-3 border-2 border-indigo-200 dark:border-slate-700 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 resize-none`"
         placeholder="Add description..."
         :disabled="loading"
       ></textarea>
@@ -144,7 +144,7 @@ const handleDeleteCancel = () => {
         <button
           @click="handleCancel"
           :disabled="loading"
-          class="flex-1 bg-slate-100 text-slate-700 py-2.5 px-5 rounded-xl font-semibold hover:bg-slate-200 disabled:bg-slate-50 disabled:text-slate-400 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+          class="flex-1 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 py-2.5 px-5 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 disabled:bg-slate-50 dark:disabled:bg-slate-800 disabled:text-slate-400 dark:disabled:text-slate-600 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
         >
           Cancel
         </button>
@@ -159,7 +159,7 @@ const handleDeleteCancel = () => {
           :checked="todo.completed"
           @change="handleToggle"
           :disabled="loading"
-          :class="`w-6 h-6 ${props.themeClasses?.checkboxColor || 'text-indigo-600'} border-2 border-slate-300 rounded-lg focus:ring-2 ${props.themeClasses?.checkboxRing || 'focus:ring-indigo-500'} focus:ring-offset-2 cursor-pointer disabled:cursor-not-allowed transition-all ${props.themeClasses?.checkboxHover || 'hover:border-indigo-600 hover:bg-indigo-100 hover:ring-2 hover:ring-indigo-300'} hover:shadow-lg peer relative`"
+          :class="`w-6 h-6 ${props.themeClasses?.checkboxColor || 'text-indigo-600'} border-2 border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 ${props.themeClasses?.checkboxRing || 'focus:ring-indigo-500'} focus:ring-offset-2 dark:focus:ring-offset-slate-800 cursor-pointer disabled:cursor-not-allowed transition-all ${props.themeClasses?.checkboxHover || 'hover:border-indigo-600 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:ring-2 hover:ring-indigo-300 dark:hover:ring-indigo-600'} hover:shadow-lg peer relative`"
         />
         <!-- Hover checkmark -->
         <svg
@@ -175,16 +175,16 @@ const handleDeleteCancel = () => {
       <div class="flex-1 min-w-0">
         <div class="flex items-center justify-between gap-2">
           <h3
-            :class="[
-              'text-lg font-bold transition-all flex-1',
-              todo.completed ? 'line-through text-slate-400' : 'text-slate-800'
-            ]"
+          :class="[
+            'text-lg font-bold transition-all flex-1',
+            todo.completed ? 'line-through text-slate-400 dark:text-slate-500' : 'text-slate-800 dark:text-slate-100'
+          ]"
           >
             {{ todo.title }}
           </h3>
           <svg
             :class="[
-              'w-5 h-5 text-slate-400 transition-transform duration-200 flex-shrink-0',
+              'w-5 h-5 text-slate-400 dark:text-slate-500 transition-transform duration-200 flex-shrink-0',
               isExpanded && 'transform rotate-180'
             ]"
             fill="none"
@@ -198,35 +198,35 @@ const handleDeleteCancel = () => {
         <!-- Expanded content - Table view -->
         <Transition name="expand">
           <div v-if="isExpanded" class="mt-4">
-            <div class="overflow-x-auto rounded-lg border border-slate-200 bg-slate-50/50">
+            <div class="overflow-x-auto rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-900/30">
               <table class="w-full text-sm min-w-full">
-                <tbody class="divide-y divide-slate-200">
+                <tbody class="divide-y divide-slate-200 dark:divide-slate-700">
                   <tr>
-                    <td class="px-4 py-3 font-semibold text-slate-700 bg-slate-100/50 w-32">
+                    <td class="px-4 py-3 font-semibold text-slate-700 dark:text-slate-200 bg-slate-100/50 dark:bg-slate-700/50 w-32">
                       ID
                     </td>
-                    <td class="px-4 py-3 text-slate-600 font-mono text-xs">
+                    <td class="px-4 py-3 text-slate-600 dark:text-slate-300 font-mono text-xs">
                       {{ todo.id || 'N/A' }}
                     </td>
                   </tr>
                   <tr>
-                    <td class="px-4 py-3 font-semibold text-slate-700 bg-slate-100/50">
+                    <td class="px-4 py-3 font-semibold text-slate-700 dark:text-slate-200 bg-slate-100/50 dark:bg-slate-700/50">
                       Title
                     </td>
-                    <td class="px-4 py-3 text-slate-800 font-medium">
+                    <td class="px-4 py-3 text-slate-800 dark:text-slate-100 font-medium">
                       {{ todo.title }}
                     </td>
                   </tr>
                   <tr>
-                    <td class="px-4 py-3 font-semibold text-slate-700 bg-slate-100/50">
+                    <td class="px-4 py-3 font-semibold text-slate-700 dark:text-slate-200 bg-slate-100/50 dark:bg-slate-700/50">
                       Description
                     </td>
-                    <td class="px-4 py-3 text-slate-600">
+                    <td class="px-4 py-3 text-slate-600 dark:text-slate-300">
                       {{ todo.description || 'No description' }}
                     </td>
                   </tr>
                   <tr>
-                    <td class="px-4 py-3 font-semibold text-slate-700 bg-slate-100/50">
+                    <td class="px-4 py-3 font-semibold text-slate-700 dark:text-slate-200 bg-slate-100/50 dark:bg-slate-700/50">
                       Status
                     </td>
                     <td class="px-4 py-3">
@@ -234,8 +234,8 @@ const handleDeleteCancel = () => {
                         :class="[
                           'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
                           todo.completed
-                            ? 'bg-green-100 text-green-800'
-                            : 'bg-amber-100 text-amber-800'
+                            ? 'bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300'
+                            : 'bg-amber-100 dark:bg-amber-900/30 text-amber-800 dark:text-amber-300'
                         ]"
                       >
                         {{ todo.completed ? 'Completed' : 'Pending' }}
@@ -245,7 +245,7 @@ const handleDeleteCancel = () => {
                 </tbody>
               </table>
             </div>
-            <div class="flex gap-2 mt-4">
+            <div class="flex gap-2 mt-4 border-t border-slate-200 dark:border-slate-700 pt-4">
               <button
                 @click.stop="handleEdit"
                 :disabled="loading"

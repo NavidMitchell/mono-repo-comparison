@@ -59,7 +59,7 @@ const handleBackdropClick = (e: MouseEvent) => {
         <Transition name="scale">
           <div
             v-if="show"
-            class="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 border border-white/20"
+            class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl max-w-md w-full p-8 border border-white/20 dark:border-slate-700/20"
           >
             <div class="flex items-center justify-between mb-6">
               <div class="flex items-center gap-3">
@@ -68,11 +68,11 @@ const handleBackdropClick = (e: MouseEvent) => {
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-800">Add New Todo</h2>
+                <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-200">Add New Todo</h2>
               </div>
               <button
                 @click="handleCancel"
-                class="text-slate-500 hover:text-slate-700 transition-colors p-2 hover:bg-slate-100 rounded-lg"
+                class="text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-colors p-2 hover:bg-slate-100 dark:hover:bg-slate-700 rounded-lg"
                 :disabled="loading"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -82,29 +82,29 @@ const handleBackdropClick = (e: MouseEvent) => {
             </div>
             <form @submit.prevent="handleSubmit" class="space-y-5">
               <div>
-                <label for="title" class="block text-sm font-semibold text-slate-700 mb-2">
-                  Title <span class="text-red-500">*</span>
+                <label for="title" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
+                  Title <span class="text-red-500 dark:text-red-400">*</span>
                 </label>
                 <input
                   id="title"
                   v-model="title"
                   type="text"
                   required
-                  :class="`w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white text-slate-800 placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed`"
+                  :class="`w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 disabled:bg-slate-50 dark:disabled:bg-slate-900 disabled:cursor-not-allowed`"
                   placeholder="What needs to be done?"
                   :disabled="loading"
                   autofocus
                 />
               </div>
               <div>
-                <label for="description" class="block text-sm font-semibold text-slate-700 mb-2">
+                <label for="description" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Description
                 </label>
                 <textarea
                   id="description"
                   v-model="description"
                   rows="3"
-                  :class="`w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white text-slate-800 placeholder-slate-400 resize-none disabled:bg-slate-50 disabled:cursor-not-allowed`"
+                  :class="`w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 resize-none disabled:bg-slate-50 dark:disabled:bg-slate-900 disabled:cursor-not-allowed`"
                   placeholder="Add any additional details..."
                   :disabled="loading"
                 ></textarea>

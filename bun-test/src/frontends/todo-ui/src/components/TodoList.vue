@@ -19,7 +19,20 @@
 
   // Theme management
   const theme = ref<Theme>((localStorage.getItem('todo-theme') as Theme) || 'purple')
-
+  
+  // Dark mode management
+  const isDark = ref(localStorage.getItem('dark-mode') === 'true')
+  
+  const toggleDarkMode = () => {
+    isDark.value = !isDark.value
+    localStorage.setItem('dark-mode', isDark.value.toString())
+    if (isDark.value) {
+      document.documentElement.classList.add('dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+    }
+  }
+  
   const themeClasses = computed(() => {
     const themes = {
       purple: {
@@ -252,14 +265,30 @@
   })
 
   onMounted(() => {
+    if (isDark.value) {
+      document.documentElement.classList.add('dark')
+    }
     loadTodos()
   })
 </script>
 
 <template>
-  <div :class="`min-h-screen ${themeClasses.bgGradient} py-12 px-4`">
+  <div :class="`min-h-screen ${themeClasses.bgGradient} dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 py-12 px-4`">
     <!-- Theme Picker -->
     <ThemePicker :theme="theme" @update:theme="updateTheme" />
+    
+    <!-- Dark Mode Toggle -->
+    <button
+      @click="toggleDarkMode"
+      class="fixed right-4 top-20 z-40 w-12 h-12 bg-white/90 dark:bg-slate-800/90 backdrop-blur-sm rounded-full shadow-lg hover:shadow-xl border-2 border-white/20 dark:border-slate-700/20 hover:border-indigo-300 dark:hover:border-indigo-600 flex items-center justify-center transition-all duration-200 hover:scale-110"
+    >
+      <svg v-if="!isDark" class="w-6 h-6 text-slate-700 dark:text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+      </svg>
+      <svg v-else class="w-6 h-6 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+      </svg>
+    </button>
 
     <div class="max-w-3xl mx-auto">
       <!-- Header -->
@@ -267,16 +296,16 @@
         <h1 :class="`text-5xl font-extrabold ${themeClasses.headerGradient} bg-clip-text text-transparent mb-2`">
           Todo List
         </h1>
-        <p class="text-slate-600 text-lg">Stay organized and get things done</p>
+        <p class="text-slate-600 dark:text-slate-400 text-lg">Stay organized and get things done</p>
       </div>
 
       <!-- Error message -->
-      <div v-if="error" class="mb-6 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg shadow-sm">
+      <div v-if="error" class="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-600 rounded-r-lg shadow-sm">
         <div class="flex items-center">
-          <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+          <svg class="w-5 h-5 text-red-500 dark:text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
           </svg>
-          <p class="text-red-700 font-medium">{{ error }}</p>
+          <p class="text-red-700 dark:text-red-300 font-medium">{{ error }}</p>
         </div>
       </div>
 
@@ -292,7 +321,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            :class="`w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 ${themeClasses.inputFocus} transition-all bg-white text-slate-800 placeholder-slate-400`"
+            :class="`w-full pl-12 pr-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 ${themeClasses.inputFocus} transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500`"
             placeholder="Search todos (supports Lucene syntax, e.g., title:work OR completed:false)"
           />
           <button
@@ -325,19 +354,19 @@
       <div class="space-y-3">
         <div v-if="loading && todos.length === 0" class="text-center py-16">
           <div :class="`inline-block animate-spin rounded-full h-12 w-12 border-4 ${themeClasses.spinner}`"></div>
-          <p class="mt-4 text-slate-600 font-medium">Loading your todos...</p>
+          <p class="mt-4 text-slate-600 dark:text-slate-400 font-medium">Loading your todos...</p>
         </div>
 
-        <div v-else-if="todos.length === 0" class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg p-12 text-center border border-white/20">
-          <div :class="`w-20 h-20 mx-auto mb-4 bg-gradient-to-br ${themeClasses.iconBgEmpty} rounded-full flex items-center justify-center`">
-            <svg :class="`w-10 h-10 ${themeClasses.iconText}`" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div v-else-if="todos.length === 0" class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-lg p-12 text-center border border-white/20 dark:border-slate-700/20">
+          <div :class="`w-20 h-20 mx-auto mb-4 bg-gradient-to-br ${themeClasses.iconBgEmpty} dark:opacity-60 rounded-full flex items-center justify-center`">
+            <svg :class="`w-10 h-10 ${themeClasses.iconText} dark:opacity-80`" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p class="text-slate-600 text-lg font-medium mb-1">
+          <p class="text-slate-600 dark:text-slate-400 text-lg font-medium mb-1">
             {{ searchQuery ? 'No todos found' : 'No todos yet' }}
           </p>
-          <p class="text-slate-500">
+          <p class="text-slate-500 dark:text-slate-500">
             {{ searchQuery ? 'Try adjusting your search query' : 'Click the button above to create your first todo!' }}
           </p>
         </div>
@@ -358,10 +387,10 @@
       </div>
 
       <!-- Loading overlay for updates -->
-      <div v-if="loading && todos.length > 0" class="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-        <div class="bg-white rounded-2xl shadow-2xl p-6 flex items-center gap-4 border border-white/20">
-          <div :class="`animate-spin rounded-full h-8 w-8 border-4 ${themeClasses.spinner}`"></div>
-          <span class="text-slate-700 font-medium">Processing...</span>
+      <div v-if="loading && todos.length > 0" class="fixed inset-0 bg-black/30 dark:bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl shadow-2xl p-6 flex items-center gap-4 border border-white/20 dark:border-slate-700/20">
+          <div :class="`animate-spin rounded-full h-8 w-8 border-4 ${themeClasses.spinner} dark:opacity-60`"></div>
+          <span class="text-slate-700 dark:text-slate-300 font-medium">Processing...</span>
         </div>
       </div>
     </div>

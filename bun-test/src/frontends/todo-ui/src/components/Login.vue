@@ -39,32 +39,32 @@ const handleLogin = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 flex items-center justify-center py-12 px-4">
+  <div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 dark:from-slate-900 dark:via-slate-800 dark:to-slate-900 flex items-center justify-center py-12 px-4">
     <div class="max-w-md w-full">
       <!-- Header -->
       <div class="text-center mb-8">
         <h1 class="text-4xl font-extrabold bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent mb-2">
           Todo App
         </h1>
-        <p class="text-slate-600">Sign in to access your todos</p>
+        <p class="text-slate-600 dark:text-slate-400">Sign in to access your todos</p>
       </div>
 
       <!-- Login Card -->
-      <div class="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
+      <div class="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20 dark:border-slate-700/20">
         <form @submit.prevent="handleLogin" class="space-y-6">
           <!-- Error message -->
-          <div v-if="error" class="p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+          <div v-if="error" class="p-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 dark:border-red-600 rounded-r-lg">
             <div class="flex items-center">
-              <svg class="w-5 h-5 text-red-500 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-5 h-5 text-red-500 dark:text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
               </svg>
-              <p class="text-red-700 font-medium text-sm">{{ error }}</p>
+              <p class="text-red-700 dark:text-red-300 font-medium text-sm">{{ error }}</p>
             </div>
           </div>
 
           <!-- Host -->
           <div>
-            <label for="host" class="block text-sm font-semibold text-slate-700 mb-2">
+            <label for="host" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Host
             </label>
             <input
@@ -72,7 +72,7 @@ const handleLogin = async () => {
               v-model="host"
               type="text"
               required
-              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400"
+              class="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
               placeholder="localhost"
               :disabled="loading"
             />
@@ -80,7 +80,7 @@ const handleLogin = async () => {
 
           <!-- Port -->
           <div>
-            <label for="port" class="block text-sm font-semibold text-slate-700 mb-2">
+            <label for="port" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Port
             </label>
             <input
@@ -88,7 +88,7 @@ const handleLogin = async () => {
               v-model.number="port"
               type="number"
               required
-              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400"
+              class="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
               placeholder="58503"
               :disabled="loading"
             />
@@ -96,7 +96,7 @@ const handleLogin = async () => {
 
           <!-- Login -->
           <div>
-            <label for="login" class="block text-sm font-semibold text-slate-700 mb-2">
+            <label for="login" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Username
             </label>
             <input
@@ -104,7 +104,7 @@ const handleLogin = async () => {
               v-model="login"
               type="text"
               required
-              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400"
+              class="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
               placeholder="admin"
               :disabled="loading"
             />
@@ -112,7 +112,7 @@ const handleLogin = async () => {
 
           <!-- Passcode -->
           <div>
-            <label for="passcode" class="block text-sm font-semibold text-slate-700 mb-2">
+            <label for="passcode" class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
               Password
             </label>
             <input
@@ -120,7 +120,7 @@ const handleLogin = async () => {
               v-model="passcode"
               type="password"
               required
-              class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400"
+              class="w-full px-4 py-3 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500"
               placeholder="Enter password"
               :disabled="loading"
             />
