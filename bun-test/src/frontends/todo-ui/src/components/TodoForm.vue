@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 
+type ThemeClasses = {
+  buttonGradient: string
+  inputFocus: string
+}
+
 const props = defineProps<{
   show: boolean
   loading?: boolean
+  themeClasses?: ThemeClasses
 }>()
 
 const emit = defineEmits<{
@@ -57,7 +63,7 @@ const handleBackdropClick = (e: MouseEvent) => {
           >
             <div class="flex items-center justify-between mb-6">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg">
+                <div :class="`w-10 h-10 ${props.themeClasses?.buttonGradient || 'bg-gradient-to-br from-indigo-500 to-purple-600'} rounded-xl flex items-center justify-center shadow-lg`">
                   <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
                   </svg>
@@ -84,7 +90,7 @@ const handleBackdropClick = (e: MouseEvent) => {
                   v-model="title"
                   type="text"
                   required
-                  class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed"
+                  :class="`w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white text-slate-800 placeholder-slate-400 disabled:bg-slate-50 disabled:cursor-not-allowed`"
                   placeholder="What needs to be done?"
                   :disabled="loading"
                   autofocus
@@ -98,7 +104,7 @@ const handleBackdropClick = (e: MouseEvent) => {
                   id="description"
                   v-model="description"
                   rows="3"
-                  class="w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400 resize-none disabled:bg-slate-50 disabled:cursor-not-allowed"
+                  :class="`w-full px-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 ${props.themeClasses?.inputFocus || 'focus:ring-indigo-500 focus:border-indigo-500'} transition-all bg-white text-slate-800 placeholder-slate-400 resize-none disabled:bg-slate-50 disabled:cursor-not-allowed`"
                   placeholder="Add any additional details..."
                   :disabled="loading"
                 ></textarea>
@@ -106,7 +112,7 @@ const handleBackdropClick = (e: MouseEvent) => {
               <button
                 type="submit"
                 :disabled="loading || !title.trim()"
-                class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]"
+                :class="`w-full ${props.themeClasses?.buttonGradient || 'bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700'} text-white py-3.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl disabled:from-slate-300 disabled:to-slate-400 disabled:cursor-not-allowed disabled:shadow-none transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98]`"
               >
                 <span v-if="loading" class="flex items-center justify-center gap-2">
                   <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
