@@ -1,0 +1,14 @@
+{
+  "name": "bun-test-structures",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@kinotic/structures-api": "catalog:"
+  },
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

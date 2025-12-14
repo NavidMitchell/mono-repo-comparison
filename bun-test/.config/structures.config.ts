@@ -2,7 +2,7 @@ import type { TypescriptProjectConfig } from '@kinotic/structures-api'
 
 const config: TypescriptProjectConfig = {
   mdl: "ts",
-  application: "turbo-pnpm-test",
+  application: "bun-test",
   entitiesPaths: [
     "src/structures/model"
   ],
