@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, watch } from 'vue'
   import { Todo, TodoEntityService } from 'bun-test-structures'
   import { Pageable } from '@kinotic/continuum-client'
   import TodoForm from './TodoForm.vue'
@@ -10,13 +10,26 @@
   const loading = ref(false)
   const error = ref<string | null>(null)
   const editingTodoId = ref<string | null>(null)
+  const showForm = ref(false)
+  const searchQuery = ref('')
+  let searchTimeout: ReturnType<typeof setTimeout> | null = null
 
-  // Load all todos
+  // Load all todos or search
   const loadTodos = async () => {
     loading.value = true
     error.value = null
     try {
-      const page = await todoService.findAll(Pageable.create(0, 1000))
+      const pageable = Pageable.create(0, 1000)
+      let page
+      
+      if (searchQuery.value.trim()) {
+        // Use search with Lucene syntax
+        page = await todoService.search(searchQuery.value.trim(), pageable)
+      } else {
+        // Load all todos
+        page = await todoService.findAll(pageable)
+      }
+      
       todos.value = page.content || []
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load todos'
@@ -24,6 +37,17 @@
     } finally {
       loading.value = false
     }
+  }
+
+  // Debounced search
+  const handleSearch = () => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout)
+    }
+    
+    searchTimeout = setTimeout(() => {
+      loadTodos()
+    }, 300) // 300ms debounce
   }
 
   // Handle todo creation from TodoForm
@@ -37,6 +61,7 @@
       todo.completed = false
 
       await todoService.save(todo)
+      showForm.value = false
       await loadTodos()
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to create todo'
@@ -44,6 +69,16 @@
     } finally {
       loading.value = false
     }
+  }
+
+  // Toggle form visibility
+  const toggleForm = () => {
+    showForm.value = !showForm.value
+  }
+
+  // Handle form cancel
+  const handleFormCancel = () => {
+    showForm.value = false
   }
 
   // Handle todo toggle from TodoItem
@@ -106,6 +141,11 @@
     }
   }
 
+  // Watch for search query changes
+  watch(searchQuery, () => {
+    handleSearch()
+  })
+
   onMounted(() => {
     loadTodos()
   })
@@ -132,8 +172,46 @@
         </div>
       </div>
 
-      <!-- Create todo form -->
-      <TodoForm :loading="loading" @create="handleCreate" />
+      <!-- Search and Add Todo Section -->
+      <div class="mb-6 space-y-4">
+        <!-- Search Input -->
+        <div class="relative">
+          <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </div>
+          <input
+            v-model="searchQuery"
+            type="text"
+            class="w-full pl-12 pr-4 py-3 border-2 border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all bg-white text-slate-800 placeholder-slate-400"
+            placeholder="Search todos (supports Lucene syntax, e.g., title:work OR completed:false)"
+          />
+          <button
+            v-if="searchQuery"
+            @click="searchQuery = ''"
+            class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+          >
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Add Todo Button -->
+        <button
+          @click="toggleForm"
+          class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white py-3.5 px-6 rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-indigo-700 hover:to-purple-700 transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Add New Todo
+        </button>
+      </div>
+
+      <!-- Create todo form modal -->
+      <TodoForm :show="showForm" :loading="loading" @create="handleCreate" @cancel="handleFormCancel" />
 
       <!-- Todos list -->
       <div class="space-y-3">
@@ -148,8 +226,12 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
             </svg>
           </div>
-          <p class="text-slate-600 text-lg font-medium mb-1">No todos yet</p>
-          <p class="text-slate-500">Create your first todo above to get started!</p>
+          <p class="text-slate-600 text-lg font-medium mb-1">
+            {{ searchQuery ? 'No todos found' : 'No todos yet' }}
+          </p>
+          <p class="text-slate-500">
+            {{ searchQuery ? 'Try adjusting your search query' : 'Click the button above to create your first todo!' }}
+          </p>
         </div>
 
         <TodoItem
