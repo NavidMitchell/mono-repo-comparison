@@ -30,6 +30,7 @@ const emit = defineEmits<{
 
 const editTitle = ref(props.todo.title)
 const editDescription = ref(props.todo.description || '')
+const editCompleted = ref(props.todo.completed || false)
 const showDeleteConfirm = ref(false)
 const isExpanded = ref(false)
 
@@ -37,6 +38,7 @@ const isExpanded = ref(false)
 watch(() => props.todo, (newTodo) => {
   editTitle.value = newTodo.title
   editDescription.value = newTodo.description || ''
+  editCompleted.value = newTodo.completed || false
 }, { deep: true })
 
 // Collapse when editing starts
@@ -75,6 +77,7 @@ const handleSave = () => {
   const updatedTodo = { ...props.todo }
   updatedTodo.title = editTitle.value.trim()
   updatedTodo.description = editDescription.value.trim()
+  updatedTodo.completed = editCompleted.value
   emit('save', updatedTodo)
 }
 
@@ -82,6 +85,7 @@ const handleCancel = () => {
   // Reset edit values
   editTitle.value = props.todo.title
   editDescription.value = props.todo.description || ''
+  editCompleted.value = props.todo.completed || false
   emit('cancel')
 }
 
@@ -130,6 +134,18 @@ const handleDeleteCancel = () => {
         placeholder="Add description..."
         :disabled="loading"
       ></textarea>
+      <!-- Completed checkbox -->
+      <div class="flex items-center gap-3">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input
+            type="checkbox"
+            v-model="editCompleted"
+            :disabled="loading"
+            :class="`w-5 h-5 ${props.themeClasses?.checkboxColor || 'text-indigo-600'} border-2 border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 ${props.themeClasses?.checkboxRing || 'focus:ring-indigo-500'} focus:ring-offset-2 dark:focus:ring-offset-slate-800 cursor-pointer disabled:cursor-not-allowed transition-all ${props.themeClasses?.checkboxHover || 'hover:border-indigo-600 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 hover:ring-2 hover:ring-indigo-300 dark:hover:ring-indigo-600'}`"
+          />
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Completed</span>
+        </label>
+      </div>
       <div class="flex gap-3">
         <button
           @click="handleSave"
